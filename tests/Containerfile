@@ -1,0 +1,21 @@
+FROM fedora:latest
+
+# Install build dependencies
+RUN dnf install -y \
+    golang \
+    libnvme-devel \
+    gcc \
+    make \
+    git \
+    && dnf clean all
+
+# Set working directory
+WORKDIR /workspace
+
+# Copy the project files
+COPY . .
+
+# Build the Go module
+RUN go mod download
+
+CMD ["/bin/bash"]

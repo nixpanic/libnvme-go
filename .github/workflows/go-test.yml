@@ -1,0 +1,34 @@
+name: Test
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build container
+        run: |
+          podman build -t libnvme-go -f tests/Containerfile .
+
+      - name: Run tests
+        run: |
+          podman run --rm libnvme-go go test -v
+
+      - name: Run tests (short mode)
+        run: |
+          podman run --rm libnvme-go go test -v -short
+
+      - name: Build binary
+        run: |
+          podman run --rm libnvme-go go build -v
