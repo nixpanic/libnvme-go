@@ -106,6 +106,11 @@ func DisconnectCtrl(args *ConnectArgs) error {
 		return fmt.Errorf("disconnect arguments cannot be nil")
 	}
 
+	// Validate required fields
+	if args.Subsysnqn == "" {
+		return fmt.Errorf("subsysnqn is required")
+	}
+
 	// Create nvme_root
 	root := C.nvme_create_root(nil, C.DEFAULT_LOGLEVEL)
 	if root == nil {
