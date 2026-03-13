@@ -18,4 +18,5 @@ COPY . .
 # Build the Go module
 RUN go mod download
 
-CMD ["/bin/bash"]
+# Run tests by default
+CMD ["go", "test", "-v", "./..."]
