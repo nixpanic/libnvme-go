@@ -17,18 +17,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build container
-        run: |
-          podman build -t libnvme-go -f tests/Containerfile .
-
       - name: Run tests
-        run: |
-          podman run --rm libnvme-go go test -v
+        run: make test
 
       - name: Run tests (short mode)
         run: |
-          podman run --rm libnvme-go go test -v -short
+          make build-image
+          podman run --rm libnvme-go-test go test -v -short
 
       - name: Build binary
         run: |
-          podman run --rm libnvme-go go build -v
+          make build-image
+          podman run --rm libnvme-go-test go build -v
